@@ -105,7 +105,7 @@ npm run test:browser
 npm run check:release
 ```
 
-Tests exercise validation, revision conflicts, worker lifecycle, Pi adapters, MCP feedback/disconnects, and browser behavior using temporary projects and fake workers. They do not make paid model calls or establish identical interview quality across models. Linux is exercised in CI; macOS and Windows commands are provided but not yet end-to-end tested.
+Tests exercise validation, revision conflicts, worker lifecycle, Pi adapters, MCP feedback/disconnects, and browser behavior using temporary projects and fake workers. They do not make paid model calls or establish identical interview quality across models. CI is configured for Linux; macOS and Windows commands are provided but not yet end-to-end tested.
 
 This is an early public release. The catalog cannot express every possible interface, simulations are not production backends, and a detached CLI cannot wake an idle agent. Agent behavior still depends on the host and model. [Architecture](docs/architecture.md) · [Third-party credits](docs/third-party.md)
 
