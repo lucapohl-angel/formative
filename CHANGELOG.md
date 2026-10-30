@@ -1,5 +1,11 @@
 # Changelog
 
+## 0.2.1 — npm publication preparation (unreleased)
+
+- Add `formative install-skill --agent codex|claude` and a portable `formative mcp` entry point.
+- Prepare public registry packaging, npm-compatible README links, and Pi package-gallery metadata.
+- Add a manually dispatched trusted-publishing workflow; final package scope and npm authentication are still required before registry publication.
+
 ## 0.2.0 — first public release
 
 - Standalone relentless discovery skill with attributed grilling and domain-modeling guidance.

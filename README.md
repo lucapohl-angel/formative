@@ -4,9 +4,9 @@
 
 Start with a vague app or website idea. Formative interviews you persistently, follows decisions into their consequences, proposes overlooked requirements, and uses interactive frontend prototypes when seeing an interface helps you decide. The result is a product plan shaped by what you actually want.
 
-![Formative displaying a fictional workspace prototype and its separate review controls](docs/media/formative.png)
+![Formative displaying a fictional workspace prototype and its separate review controls](https://raw.githubusercontent.com/lucapohl-angel/formative/main/docs/media/formative.png)
 
-[Quick start](#quick-start) · [Install for your agent](docs/installation.md) · [Discovery workflow](docs/usage.md) · [Read the skill](skills/formative/SKILL.md) · [Component design](DESIGN.md) · [Contributing](CONTRIBUTING.md)
+[Quick start](#quick-start) · [Install for your agent](https://github.com/lucapohl-angel/formative/blob/main/docs/installation.md) · [Discovery workflow](https://github.com/lucapohl-angel/formative/blob/main/docs/usage.md) · [Read the skill](https://github.com/lucapohl-angel/formative/blob/main/skills/formative/SKILL.md) · [Component design](https://github.com/lucapohl-angel/formative/blob/main/DESIGN.md) · [Contributing](https://github.com/lucapohl-angel/formative/blob/main/CONTRIBUTING.md)
 
 [![CI](https://github.com/lucapohl-angel/formative/actions/workflows/ci.yml/badge.svg)](https://github.com/lucapohl-angel/formative/actions/workflows/ci.yml)
 
@@ -21,7 +21,7 @@ Start with a vague app or website idea. Formative interviews you persistently, f
 | Live feedback | A dedicated agent handles notes while the main conversation stays available. Valid revisions update the open preview. |
 | Repeated self-critique | Reviews deliverables at least three times and continues improving when material issues remain. |
 
-The interview adapts Matt Pocock's grilling and domain-modeling methods, with [pinned attribution and the original MIT notice](skills/formative/references/upstream.md). You do not need Grill Me installed.
+The interview adapts Matt Pocock's grilling and domain-modeling methods, with [pinned attribution and the original MIT notice](https://github.com/lucapohl-angel/formative/blob/main/skills/formative/references/upstream.md). You do not need Grill Me installed.
 
 ## Quick start
 
@@ -40,7 +40,7 @@ node bin/formative.mjs preview --project .local/demo --manual
 
 Open the printed loopback URL and keep the terminal running. Manual mode saves feedback but does not generate updates itself. **Finish prototype testing** saves the checkpoint and stops the server. Reopen the same project with `preview`; do not initialize it twice.
 
-For a real discovery session and agent feedback, follow the [installation guide](docs/installation.md).
+For a real discovery session and agent feedback, follow the [installation guide](https://github.com/lucapohl-angel/formative/blob/main/docs/installation.md).
 
 ## Choose your agent
 
@@ -51,7 +51,7 @@ For a real discovery session and agent feedback, follow the [installation guide]
 | Pi | Native package extension + skill | `/formative`; the preview owns a dedicated restricted Pi worker. |
 | Other local agents | MCP tools or portable CLI + skill instructions | Host-managed feedback, or an explicit manual loop. |
 
-Claude Code and Codex do **not** require Pi. The MCP server runs no model; the host agent processes feedback with its own tools and account. A worker must actively call `wait` to receive notes. If your host cannot keep a background worker active, feedback stays queued until an agent handles it—there is no universal idle-host wakeup. [Feedback and recovery](docs/usage.md)
+Claude Code and Codex do **not** require Pi. The MCP server runs no model; the host agent processes feedback with its own tools and account. A worker must actively call `wait` to receive notes. If your host cannot keep a background worker active, feedback stays queued until an agent handles it—there is no universal idle-host wakeup. [Feedback and recovery](https://github.com/lucapohl-angel/formative/blob/main/docs/usage.md)
 
 ## Interview → prototype → learn → continue
 
@@ -77,7 +77,7 @@ Simulated login, payment, and saving are not real services. Prototype colors, ty
 
 Generated snapshots live under `.formative/exports/`. They contain product records represented in the prototype, not every discovery note. The agent combines those records with the interview and unprototyped requirements to write `plan.md` or your chosen destination. Runtime exports never overwrite that written plan. Applied feedback is not blanket approval.
 
-Project state, revision snapshots, feedback, and checkpoint handoffs live in the selected project's `.formative/` directory. Back it up with your project. The browser runs locally; feedback processed by an agent follows its provider's policy. [Security and data boundaries](SECURITY.md)
+Project state, revision snapshots, feedback, and checkpoint handoffs live in the selected project's `.formative/` directory. Back it up with your project. The browser runs locally; feedback processed by an agent follows its provider's policy. [Security and data boundaries](https://github.com/lucapohl-angel/formative/blob/main/SECURITY.md)
 
 ## A coherent catalog, with room to extend
 
@@ -88,7 +88,7 @@ node bin/formative.mjs catalog --query form
 node bin/formative.mjs catalog --name Input
 ```
 
-Project-local components can extend the catalog through a TSX implementation and validated manifest. They are trusted developer code, not an untrusted plugin sandbox. A catalog limitation must remain a prototype limitation; it must not silently remove a product requirement. [Component authoring](skills/formative/references/components.md)
+Project-local components can extend the catalog through a TSX implementation and validated manifest. They are trusted developer code, not an untrusted plugin sandbox. A catalog limitation must remain a prototype limitation; it must not silently remove a product requirement. [Component authoring](https://github.com/lucapohl-angel/formative/blob/main/skills/formative/references/components.md)
 
 ## Use it with Planboard
 
@@ -107,6 +107,6 @@ npm run check:release
 
 Tests exercise validation, revision conflicts, worker lifecycle, Pi adapters, MCP feedback/disconnects, and browser behavior using temporary projects and fake workers. They do not make paid model calls or establish identical interview quality across models. CI is configured for Linux; macOS and Windows commands are provided but not yet end-to-end tested.
 
-This is an early public release. The catalog cannot express every possible interface, simulations are not production backends, and a detached CLI cannot wake an idle agent. Agent behavior still depends on the host and model. [Architecture](docs/architecture.md) · [Third-party credits](docs/third-party.md)
+This is an early public release. The catalog cannot express every possible interface, simulations are not production backends, and a detached CLI cannot wake an idle agent. Agent behavior still depends on the host and model. [Architecture](https://github.com/lucapohl-angel/formative/blob/main/docs/architecture.md) · [Third-party credits](https://github.com/lucapohl-angel/formative/blob/main/docs/third-party.md)
 
-**License:** [MIT](LICENSE), with the bundled upstream skill attribution and third-party licenses preserved.
+**License:** [MIT](https://github.com/lucapohl-angel/formative/blob/main/LICENSE), with the bundled upstream skill attribution and third-party licenses preserved.

@@ -1,11 +1,11 @@
 {
   "name": "formative",
-  "version": "0.2.0",
+  "version": "0.2.1",
   "private": true,
   "type": "module",
   "description": "Product discovery and interactive prototypes for coding agents",
   "bin": {
-    "formative": "./bin/formative.mjs"
+    "formative": "bin/formative.mjs"
   },
   "scripts": {
     "dev": "tsx src/cli/main.ts preview --project examples/workspace --port 4318 --dev",
@@ -24,7 +24,8 @@
     ],
     "skills": [
       "./skills"
-    ]
+    ],
+    "image": "https://raw.githubusercontent.com/lucapohl-angel/formative/main/docs/media/formative.png"
   },
   "dependencies": {
     "@dnd-kit/core": "6.3.1",
@@ -63,7 +64,7 @@
   },
   "repository": {
     "type": "git",
-    "url": "https://github.com/lucapohl-angel/formative.git"
+    "url": "git+https://github.com/lucapohl-angel/formative.git"
   },
   "homepage": "https://github.com/lucapohl-angel/formative#readme",
   "bugs": {
@@ -75,7 +76,8 @@
     "claude-code",
     "codex",
     "pi",
-    "formative"
+    "formative",
+    "pi-package"
   ],
   "files": [
     "bin/",
@@ -98,6 +100,7 @@
     "CONTRIBUTING.md",
     "SECURITY.md",
     "CHANGELOG.md",
-    "docs/catalog.md"
+    "docs/catalog.md",
+    "docs/publishing.md"
   ]
 }
