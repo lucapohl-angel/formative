@@ -1,0 +1,445 @@
+{
+  "schemaVersion": 1,
+  "catalogVersion": "1.0.0",
+  "id": "garden-website",
+  "title": "Fieldwork Gardens",
+  "summary": "A small service website with a working inquiry journey. This business and its content are illustrative.",
+  "goals": [
+    {
+      "id": "goal",
+      "user": "Product owner",
+      "outcome": "Understand the journey before implementing the backend"
+    }
+  ],
+  "journeys": [
+    {
+      "id": "inquiry-journey",
+      "goalId": "goal",
+      "title": "Ask about garden care",
+      "steps": [
+        "Read the service overview",
+        "Open the inquiry page",
+        "Describe the project",
+        "Submit and see the next step"
+      ],
+      "featureIds": [
+        "service-discovery",
+        "inquiry-feature"
+      ]
+    }
+  ],
+  "features": [
+    {
+      "id": "service-discovery",
+      "title": "Find a service",
+      "purpose": "Help visitors understand what is offered.",
+      "rules": [
+        "Show clear services without invented credentials or testimonials."
+      ],
+      "dependencies": [],
+      "data": [
+        "Mock records only"
+      ],
+      "access": [
+        "Prototype user"
+      ],
+      "acceptance": [
+        "Navigate from service information to the inquiry form."
+      ],
+      "status": "proposed",
+      "implementation": "prototyped",
+      "provenance": {
+        "origin": "inferred",
+        "evidence": "Illustrative discovery fixture. These choices demonstrate the workflow and are not user requirements."
+      }
+    },
+    {
+      "id": "inquiry-feature",
+      "title": "Send an inquiry",
+      "purpose": "Let a visitor describe a garden project.",
+      "rules": [
+        "Name and a valid email are required.",
+        "Failure preserves the draft."
+      ],
+      "dependencies": [
+        "service-discovery"
+      ],
+      "data": [
+        "Mock records only"
+      ],
+      "access": [
+        "Prototype user"
+      ],
+      "acceptance": [
+        "Submit a valid inquiry.",
+        "See useful feedback for invalid input.",
+        "Simulate a send failure."
+      ],
+      "status": "proposed",
+      "implementation": "prototyped",
+      "provenance": {
+        "origin": "inferred",
+        "evidence": "Illustrative discovery fixture. These choices demonstrate the workflow and are not user requirements."
+      }
+    }
+  ],
+  "decisions": [],
+  "screens": [
+    {
+      "id": "home",
+      "title": "Home",
+      "featureIds": [
+        "service-discovery"
+      ],
+      "spec": {
+        "root": "homeRoot",
+        "elements": {
+          "homeRoot": {
+            "type": "Container",
+            "props": {
+              "padding": "xl"
+            },
+            "children": [
+              "header",
+              "hero",
+              "services",
+              "faq",
+              "footer"
+            ]
+          },
+          "header": {
+            "type": "Header",
+            "props": {
+              "title": "Fieldwork Gardens"
+            },
+            "children": [
+              "navigation"
+            ]
+          },
+          "navigation": {
+            "type": "Navigation",
+            "props": {
+              "items": [
+                {
+                  "label": "Our services",
+                  "value": "home"
+                },
+                {
+                  "label": "Get in touch",
+                  "value": "inquiry"
+                }
+              ],
+              "value": {
+                "$bindState": "/nav"
+              }
+            }
+          },
+          "hero": {
+            "type": "Hero",
+            "props": {
+              "title": "A garden that feels like yours.",
+              "description": "Practical care and thoughtful planting for outdoor spaces you enjoy spending time in."
+            },
+            "children": [
+              "contactButton"
+            ]
+          },
+          "contactButton": {
+            "type": "Button",
+            "props": {
+              "label": "Tell us about your garden",
+              "variant": "primary"
+            },
+            "on": {
+              "press": {
+                "action": "navigate",
+                "params": {
+                  "screen": "inquiry"
+                }
+              }
+            }
+          },
+          "services": {
+            "type": "FeatureSection",
+            "props": {
+              "title": "Care for every season",
+              "description": "Choose a starting point. We can discuss the details together."
+            },
+            "children": [
+              "serviceGrid"
+            ]
+          },
+          "serviceGrid": {
+            "type": "Grid",
+            "props": {
+              "columns": 2,
+              "gap": "xl"
+            },
+            "children": [
+              "maintenance",
+              "planting"
+            ]
+          },
+          "maintenance": {
+            "type": "Stack",
+            "props": {
+              "gap": "sm"
+            },
+            "children": [
+              "maintenanceTitle",
+              "maintenanceText"
+            ]
+          },
+          "maintenanceTitle": {
+            "type": "Heading",
+            "props": {
+              "text": "Ongoing garden care",
+              "level": "h3"
+            }
+          },
+          "maintenanceText": {
+            "type": "Text",
+            "props": {
+              "text": "Regular maintenance, seasonal pruning, and help keeping your outdoor space in good shape."
+            }
+          },
+          "planting": {
+            "type": "Stack",
+            "props": {
+              "gap": "sm"
+            },
+            "children": [
+              "plantingTitle",
+              "plantingText"
+            ]
+          },
+          "plantingTitle": {
+            "type": "Heading",
+            "props": {
+              "text": "Planting and small changes",
+              "level": "h3"
+            }
+          },
+          "plantingText": {
+            "type": "Text",
+            "props": {
+              "text": "Explore new planting, refresh a border, or plan a manageable change to your garden."
+            }
+          },
+          "faq": {
+            "type": "Accordion",
+            "props": {
+              "title": "Do I need a complete plan before contacting you?"
+            },
+            "children": [
+              "faqAnswer"
+            ]
+          },
+          "faqAnswer": {
+            "type": "Text",
+            "props": {
+              "text": "No. Describe the space and what you would like to change. The next step is a conversation."
+            }
+          },
+          "footer": {
+            "type": "Footer",
+            "props": {
+              "text": "Illustrative business · Frontend prototype"
+            },
+            "children": [
+              "footerLink"
+            ]
+          },
+          "footerLink": {
+            "type": "Link",
+            "props": {
+              "label": "Start an inquiry",
+              "href": "#inquiry"
+            }
+          }
+        }
+      },
+      "links": {
+        "contactButton": [
+          "inquiry-feature"
+        ]
+      }
+    },
+    {
+      "id": "inquiry",
+      "title": "Inquiry",
+      "featureIds": [
+        "inquiry-feature"
+      ],
+      "spec": {
+        "root": "inquiryRoot",
+        "elements": {
+          "inquiryRoot": {
+            "type": "Container",
+            "props": {
+              "width": "narrow",
+              "padding": "xl"
+            },
+            "children": [
+              "inquiryLayout"
+            ]
+          },
+          "inquiryLayout": {
+            "type": "Stack",
+            "props": {
+              "gap": "lg"
+            },
+            "children": [
+              "back",
+              "inquiryHeading",
+              "inquiryIntro",
+              "inquiryForm"
+            ]
+          },
+          "back": {
+            "type": "Link",
+            "props": {
+              "label": "Back to services",
+              "href": "#home"
+            }
+          },
+          "inquiryHeading": {
+            "type": "Heading",
+            "props": {
+              "text": "Tell us about your space",
+              "level": "h1"
+            }
+          },
+          "inquiryIntro": {
+            "type": "Text",
+            "props": {
+              "text": "A few details are enough to start. This preview does not send an email.",
+              "tone": "muted"
+            }
+          },
+          "inquiryForm": {
+            "type": "Form",
+            "props": {
+              "label": "Garden inquiry"
+            },
+            "children": [
+              "name",
+              "contactEmail",
+              "service",
+              "message"
+            ],
+            "on": {
+              "submit": {
+                "action": "submit",
+                "params": {
+                  "form": "/inquiry",
+                  "target": "/inquiries",
+                  "message": "Inquiry received in the simulation. The next step would be a conversation."
+                }
+              },
+              "reset": {
+                "action": "reset",
+                "params": {}
+              }
+            }
+          },
+          "name": {
+            "type": "Input",
+            "props": {
+              "label": "Your name",
+              "value": {
+                "$bindState": "/inquiry/name"
+              },
+              "required": true
+            }
+          },
+          "contactEmail": {
+            "type": "Input",
+            "props": {
+              "label": "Email address",
+              "type": "email",
+              "value": {
+                "$bindState": "/inquiry/email"
+              },
+              "required": true
+            }
+          },
+          "service": {
+            "type": "Select",
+            "props": {
+              "label": "What can we help with?",
+              "value": {
+                "$bindState": "/inquiry/service"
+              },
+              "options": [
+                {
+                  "label": "Garden maintenance",
+                  "value": "maintenance"
+                },
+                {
+                  "label": "Planting and changes",
+                  "value": "planting"
+                }
+              ]
+            }
+          },
+          "message": {
+            "type": "Textarea",
+            "props": {
+              "label": "About your garden",
+              "value": {
+                "$bindState": "/inquiry/message"
+              },
+              "placeholder": "Describe the space and what you have in mind."
+            }
+          }
+        }
+      },
+      "links": {
+        "inquiryForm": [
+          "inquiry-feature"
+        ]
+      }
+    }
+  ],
+  "scenarios": [
+    {
+      "id": "garden-success",
+      "title": "Successful inquiry",
+      "description": "Explore the website and send a simulated inquiry.",
+      "screen": "home",
+      "outcome": "success",
+      "state": {
+        "nav": "home",
+        "inquiry": {
+          "name": "",
+          "email": "",
+          "service": "maintenance",
+          "message": ""
+        },
+        "inquiries": []
+      },
+      "controls": []
+    },
+    {
+      "id": "garden-failure",
+      "title": "Send failure",
+      "description": "Try the inquiry when the simulated service is unavailable.",
+      "screen": "inquiry",
+      "outcome": "failure",
+      "state": {
+        "nav": "home",
+        "inquiry": {
+          "name": "",
+          "email": "",
+          "service": "maintenance",
+          "message": ""
+        },
+        "inquiries": []
+      },
+      "controls": []
+    }
+  ],
+  "theme": "light",
+  "customComponents": []
+}

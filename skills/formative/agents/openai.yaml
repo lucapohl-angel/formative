@@ -1,0 +1,4 @@
+interface:
+  display_name: "Formative"
+  short_description: "Relentless product discovery with visual checkpoints"
+  default_prompt: "Use $formative to interview me relentlessly about my idea, uncover missing requirements, and prototype questions that need seeing."

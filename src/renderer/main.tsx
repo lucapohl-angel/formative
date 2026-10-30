@@ -1,0 +1,10 @@
+import '@fontsource-variable/inter';
+import React from 'react';
+import { createRoot } from 'react-dom/client';
+import App from './App.js';
+import '../design/theme.css';
+import './shell.css';
+import { ActionButton } from '../catalog/components.js';
+import { useBoundProp } from '@json-render/react';
+(window as any).FormativeRuntime={React,ActionButton,useBoundProp};
+createRoot(document.getElementById('root')!).render(<App/>);

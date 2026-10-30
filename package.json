@@ -1,0 +1,103 @@
+{
+  "name": "formative",
+  "version": "0.2.0",
+  "private": true,
+  "type": "module",
+  "description": "Product discovery and interactive prototypes for coding agents",
+  "bin": {
+    "formative": "./bin/formative.mjs"
+  },
+  "scripts": {
+    "dev": "tsx src/cli/main.ts preview --project examples/workspace --port 4318 --dev",
+    "build": "tsc --noEmit && vite build",
+    "typecheck": "tsc --noEmit",
+    "test": "tsx --test tests/*.test.ts tests/*.test.mjs",
+    "test:browser": "playwright test",
+    "catalog:check": "tsx scripts/check-catalog.ts",
+    "mcp": "node bin/formative.mjs mcp",
+    "prepack": "npm run build",
+    "check:release": "node scripts/check-release.mjs"
+  },
+  "pi": {
+    "extensions": [
+      "./src/adapters/pi/index.ts"
+    ],
+    "skills": [
+      "./skills"
+    ]
+  },
+  "dependencies": {
+    "@dnd-kit/core": "6.3.1",
+    "@dnd-kit/sortable": "10.0.0",
+    "@dnd-kit/utilities": "3.2.2",
+    "@fontsource-variable/inter": "5.3.0",
+    "@json-render/core": "0.21.3",
+    "@json-render/react": "0.21.3",
+    "@radix-ui/react-dialog": "1.3.1",
+    "@radix-ui/react-dropdown-menu": "2.2.1",
+    "@radix-ui/react-popover": "1.3.1",
+    "@radix-ui/react-select": "2.4.1",
+    "@radix-ui/react-tooltip": "1.4.1",
+    "@sinclair/typebox": "0.34.52",
+    "lucide-react": "1.64.0",
+    "react": "19.3.1",
+    "react-dom": "19.3.1",
+    "zod": "4.6.7",
+    "@modelcontextprotocol/sdk": "1.32.2",
+    "tsx": "4.23.15",
+    "esbuild": "0.28.2",
+    "typescript": "7.0.2",
+    "@types/react": "19.3.0",
+    "@types/react-dom": "19.3.0",
+    "@types/node": "26.6.6"
+  },
+  "devDependencies": {
+    "@axe-core/playwright": "4.14.0",
+    "@playwright/test": "1.64.1",
+    "@vitejs/plugin-react": "6.1.2",
+    "vite": "8.3.5"
+  },
+  "license": "MIT",
+  "engines": {
+    "node": ">=24"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/lucapohl-angel/formative.git"
+  },
+  "homepage": "https://github.com/lucapohl-angel/formative#readme",
+  "bugs": {
+    "url": "https://github.com/lucapohl-angel/formative/issues"
+  },
+  "keywords": [
+    "agent-skills",
+    "mcp",
+    "claude-code",
+    "codex",
+    "pi",
+    "formative"
+  ],
+  "files": [
+    "bin/",
+    "src/",
+    "dist/web/",
+    "skills/",
+    "scripts/install-skill.mjs",
+    "examples/website/project.json",
+    "examples/workspace/project.json",
+    "examples/workspace/custom/",
+    "README.md",
+    "LICENSE",
+    "docs/installation.md",
+    "docs/architecture.md",
+    "docs/third-party.md",
+    "docs/media/",
+    "docs/usage.md",
+    "examples/board/project.json",
+    "DESIGN.md",
+    "CONTRIBUTING.md",
+    "SECURITY.md",
+    "CHANGELOG.md",
+    "docs/catalog.md"
+  ]
+}

@@ -1,0 +1,10 @@
+{
+  "name": "RatingInput", "version": "1.0.0",
+  "description": "Choose a confidence rating from one to five using shared controls.",
+  "props": {"type":"object","additionalProperties":false,"properties":{"label":{"type":"string"},"value":{"type":"number","minimum":1,"maximum":5},"disabled":{"type":"boolean"}},"required":["label","value"]},
+  "example": {"label":"How clear is this journey?","value":3},
+  "slots": [], "events": ["change"], "bindings": ["value"],
+  "states": ["default","focus","disabled","narrow","light","dark"],
+  "designRoles": ["control","action","focus","text"],
+  "source": "Formative custom component example", "license": "MIT"
+}

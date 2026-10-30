@@ -1,0 +1,151 @@
+{
+  "schemaVersion": 1,
+  "catalogVersion": "1.0.0",
+  "id": "project-board",
+  "title": "Project priorities",
+  "summary": "Try arranging work with pointer and keyboard controls.",
+  "goals": [
+    {
+      "id": "goal",
+      "user": "Product owner",
+      "outcome": "Understand the journey before implementing the backend"
+    }
+  ],
+  "journeys": [
+    {
+      "id": "reorder-journey",
+      "goalId": "goal",
+      "title": "Choose what comes first",
+      "steps": [
+        "Review the tasks",
+        "Move one task earlier",
+        "Reset to compare the original order"
+      ],
+      "featureIds": [
+        "reorder"
+      ]
+    }
+  ],
+  "features": [
+    {
+      "id": "reorder",
+      "title": "Arrange work",
+      "purpose": "Make the order of work tangible.",
+      "rules": [
+        "Dragging and keyboard controls update the same ordered list."
+      ],
+      "dependencies": [],
+      "data": [
+        "Mock records only"
+      ],
+      "access": [
+        "Prototype user"
+      ],
+      "acceptance": [
+        "Move a task with the drag handle.",
+        "Move a task with the keyboard or labelled up/down buttons."
+      ],
+      "status": "proposed",
+      "implementation": "prototyped",
+      "provenance": {
+        "origin": "inferred",
+        "evidence": "Illustrative discovery fixture. These choices demonstrate the workflow and are not user requirements."
+      }
+    }
+  ],
+  "decisions": [],
+  "screens": [
+    {
+      "id": "board",
+      "title": "Priorities",
+      "featureIds": [
+        "reorder"
+      ],
+      "spec": {
+        "root": "boardRoot",
+        "elements": {
+          "boardRoot": {
+            "type": "Container",
+            "props": {
+              "padding": "xl",
+              "width": "content"
+            },
+            "children": [
+              "boardLayout"
+            ]
+          },
+          "boardLayout": {
+            "type": "Stack",
+            "props": {
+              "gap": "lg"
+            },
+            "children": [
+              "boardTitle",
+              "boardText",
+              "tasks"
+            ]
+          },
+          "boardTitle": {
+            "type": "Heading",
+            "props": {
+              "text": "What should happen first?",
+              "level": "h1"
+            }
+          },
+          "boardText": {
+            "type": "Text",
+            "props": {
+              "text": "Drag a task, use the handle with your keyboard, or use the move buttons. This optional pack is loaded only when the board appears.",
+              "tone": "muted"
+            }
+          },
+          "tasks": {
+            "type": "SortableBoard",
+            "props": {
+              "label": "Order of work",
+              "items": {
+                "$bindState": "/tasks"
+              }
+            }
+          }
+        }
+      },
+      "links": {
+        "tasks": [
+          "reorder"
+        ]
+      }
+    }
+  ],
+  "scenarios": [
+    {
+      "id": "board-default",
+      "title": "Initial priorities",
+      "description": "Reorder the work and compare your choice.",
+      "screen": "board",
+      "outcome": "success",
+      "state": {
+        "tasks": [
+          {
+            "id": "explore",
+            "title": "Explore the idea",
+            "description": "Find the user and the problem."
+          },
+          {
+            "id": "prototype",
+            "title": "Try a prototype",
+            "description": "Make uncertain decisions concrete."
+          },
+          {
+            "id": "review",
+            "title": "Review the plan",
+            "description": "Record what to build and why."
+          }
+        ]
+      },
+      "controls": []
+    }
+  ],
+  "theme": "light",
+  "customComponents": []
+}

@@ -1,0 +1,632 @@
+{
+  "schemaVersion": 1,
+  "catalogVersion": "1.0.0",
+  "id": "team-workspace",
+  "title": "Team workspace",
+  "summary": "Explore invitations, membership, and notification preferences. All records are illustrative.",
+  "goals": [
+    {
+      "id": "goal",
+      "user": "Product owner",
+      "outcome": "Understand the journey before implementing the backend"
+    }
+  ],
+  "journeys": [
+    {
+      "id": "invite-journey",
+      "goalId": "goal",
+      "title": "Invite a teammate",
+      "steps": [
+        "Open the members screen",
+        "Enter email and choose a role",
+        "Send the invitation",
+        "Find the pending member",
+        "Simulate acceptance"
+      ],
+      "featureIds": [
+        "invitations"
+      ]
+    },
+    {
+      "id": "settings-journey",
+      "goalId": "goal",
+      "title": "Adjust notifications",
+      "steps": [
+        "Open settings",
+        "Change preferences",
+        "Save and inspect feedback"
+      ],
+      "featureIds": [
+        "preferences"
+      ]
+    }
+  ],
+  "features": [
+    {
+      "id": "invitations",
+      "title": "Invite teammates",
+      "purpose": "Bring the right people into a shared workspace.",
+      "rules": [
+        "An invitation needs an email and a role.",
+        "Invitations remain pending until accepted.",
+        "A failed invitation keeps the entered email and role."
+      ],
+      "dependencies": [],
+      "data": [
+        "Mock records only"
+      ],
+      "access": [
+        "Prototype user"
+      ],
+      "acceptance": [
+        "Send an invitation and see it in the members table.",
+        "Simulate failure and retry without losing input."
+      ],
+      "status": "proposed",
+      "implementation": "prototyped",
+      "provenance": {
+        "origin": "inferred",
+        "evidence": "Illustrative discovery fixture. These choices demonstrate the workflow and are not user requirements."
+      }
+    },
+    {
+      "id": "preferences",
+      "title": "Notification preferences",
+      "purpose": "Choose which project updates arrive by email.",
+      "rules": [
+        "Notification preferences belong to the person.",
+        "A preference change is simulated, not saved to a real account."
+      ],
+      "dependencies": [],
+      "data": [
+        "Mock records only"
+      ],
+      "access": [
+        "Prototype user"
+      ],
+      "acceptance": [
+        "Change email preference and submit.",
+        "Reset the scenario to its initial state."
+      ],
+      "status": "proposed",
+      "implementation": "prototyped",
+      "provenance": {
+        "origin": "inferred",
+        "evidence": "Illustrative discovery fixture. These choices demonstrate the workflow and are not user requirements."
+      }
+    }
+  ],
+  "decisions": [
+    {
+      "id": "roles",
+      "question": "Which roles should invitations support?",
+      "options": [
+        "Member and admin",
+        "Custom permissions"
+      ],
+      "choice": "Member and admin",
+      "reason": "Two roles are enough to test the invitation journey; custom roles remain optional.",
+      "status": "provisional",
+      "affectedIds": [
+        "invitations"
+      ],
+      "provenance": {
+        "origin": "inferred",
+        "evidence": "Illustrative discovery fixture. These choices demonstrate the workflow and are not user requirements."
+      }
+    },
+    {
+      "id": "public-signup",
+      "question": "Should anyone be able to join?",
+      "options": [
+        "Invite only",
+        "Public signup"
+      ],
+      "choice": "Invite only",
+      "reason": "The initial experiment is a private workspace. Public signup is deferred rather than silently added.",
+      "status": "deferred",
+      "affectedIds": [
+        "invitations"
+      ],
+      "provenance": {
+        "origin": "inferred",
+        "evidence": "Illustrative discovery fixture. These choices demonstrate the workflow and are not user requirements."
+      }
+    }
+  ],
+  "screens": [
+    {
+      "id": "members",
+      "title": "Members",
+      "featureIds": [
+        "invitations"
+      ],
+      "spec": {
+        "root": "root",
+        "elements": {
+          "root": {
+            "type": "Container",
+            "props": {
+              "padding": "xl"
+            },
+            "children": [
+              "layout"
+            ]
+          },
+          "layout": {
+            "type": "Stack",
+            "props": {
+              "gap": "lg"
+            },
+            "children": [
+              "nav",
+              "headingRow",
+              "intro",
+              "memberTable",
+              "inviteDialog"
+            ]
+          },
+          "nav": {
+            "type": "Navigation",
+            "props": {
+              "items": [
+                {
+                  "label": "Members",
+                  "value": "members"
+                },
+                {
+                  "label": "Settings",
+                  "value": "settings"
+                }
+              ],
+              "value": {
+                "$bindState": "/nav"
+              }
+            }
+          },
+          "headingRow": {
+            "type": "Stack",
+            "props": {
+              "direction": "horizontal",
+              "justify": "between",
+              "align": "center"
+            },
+            "children": [
+              "heading",
+              "inviteButton"
+            ]
+          },
+          "heading": {
+            "type": "Heading",
+            "props": {
+              "text": "The people behind your projects",
+              "level": "h1"
+            }
+          },
+          "intro": {
+            "type": "Text",
+            "props": {
+              "text": "Invite teammates, choose their role, and keep track of who has joined.",
+              "tone": "muted"
+            }
+          },
+          "inviteButton": {
+            "type": "Button",
+            "props": {
+              "label": "Invite teammate",
+              "variant": "primary"
+            },
+            "on": {
+              "press": {
+                "action": "set",
+                "params": {
+                  "path": "/inviteOpen",
+                  "value": true
+                }
+              }
+            }
+          },
+          "memberTable": {
+            "type": "Table",
+            "props": {
+              "label": "Members",
+              "columns": [
+                {
+                  "key": "email",
+                  "label": "Email"
+                },
+                {
+                  "key": "role",
+                  "label": "Role"
+                },
+                {
+                  "key": "status",
+                  "label": "Status"
+                }
+              ],
+              "rows": {
+                "$state": "/members"
+              },
+              "value": {
+                "$bindState": "/selectedMember"
+              }
+            }
+          },
+          "inviteDialog": {
+            "type": "Dialog",
+            "props": {
+              "title": "Invite a teammate",
+              "description": "Choose who can join this workspace. This is a simulated invitation.",
+              "open": {
+                "$bindState": "/inviteOpen"
+              }
+            },
+            "children": [
+              "inviteForm"
+            ]
+          },
+          "inviteForm": {
+            "type": "Form",
+            "props": {
+              "label": "Invitation"
+            },
+            "children": [
+              "email",
+              "role"
+            ],
+            "on": {
+              "submit": {
+                "action": "submit",
+                "params": {
+                  "form": "/invite",
+                  "target": "/members",
+                  "close": "/inviteOpen",
+                  "message": "Invitation added. It will stay pending until accepted."
+                }
+              },
+              "reset": {
+                "action": "reset",
+                "params": {}
+              }
+            }
+          },
+          "email": {
+            "type": "Input",
+            "props": {
+              "label": "Email address",
+              "type": "email",
+              "value": {
+                "$bindState": "/invite/email"
+              },
+              "required": true,
+              "placeholder": "teammate@example.test"
+            }
+          },
+          "role": {
+            "type": "Select",
+            "props": {
+              "label": "Workspace role",
+              "value": {
+                "$bindState": "/invite/role"
+              },
+              "options": [
+                {
+                  "label": "Member",
+                  "value": "member"
+                },
+                {
+                  "label": "Admin",
+                  "value": "admin"
+                }
+              ],
+              "help": "Members collaborate. Admins also manage access."
+            }
+          }
+        }
+      },
+      "links": {
+        "inviteButton": [
+          "invitations"
+        ],
+        "memberTable": [
+          "invitations"
+        ],
+        "inviteForm": [
+          "invitations"
+        ]
+      }
+    },
+    {
+      "id": "settings",
+      "title": "Settings",
+      "featureIds": [
+        "preferences"
+      ],
+      "spec": {
+        "root": "settingsRoot",
+        "elements": {
+          "settingsRoot": {
+            "type": "Container",
+            "props": {
+              "padding": "xl"
+            },
+            "children": [
+              "settingsLayout"
+            ]
+          },
+          "settingsLayout": {
+            "type": "Stack",
+            "props": {
+              "gap": "lg"
+            },
+            "children": [
+              "settingsNav",
+              "settingsTitle",
+              "preferencesForm"
+            ]
+          },
+          "settingsNav": {
+            "type": "Navigation",
+            "props": {
+              "items": [
+                {
+                  "label": "Members",
+                  "value": "members"
+                },
+                {
+                  "label": "Settings",
+                  "value": "settings"
+                }
+              ],
+              "value": {
+                "$bindState": "/nav"
+              }
+            }
+          },
+          "settingsTitle": {
+            "type": "Heading",
+            "props": {
+              "text": "Make the workspace work for you",
+              "level": "h1"
+            }
+          },
+          "preferencesForm": {
+            "type": "Form",
+            "props": {
+              "label": "Notification preferences"
+            },
+            "children": [
+              "notificationSection"
+            ],
+            "on": {
+              "submit": {
+                "action": "submit",
+                "params": {
+                  "form": "/preferences",
+                  "message": "Your notification preferences are saved in this simulation."
+                }
+              },
+              "reset": {
+                "action": "reset",
+                "params": {}
+              }
+            }
+          },
+          "notificationSection": {
+            "type": "SettingsSection",
+            "props": {
+              "title": "Email updates",
+              "description": "Control the updates that reach your inbox."
+            },
+            "children": [
+              "emailSwitch",
+              "digest"
+            ]
+          },
+          "emailSwitch": {
+            "type": "Switch",
+            "props": {
+              "label": "Receive project updates",
+              "value": {
+                "$bindState": "/preferences/email"
+              },
+              "help": "You can still see activity inside the workspace."
+            }
+          },
+          "digest": {
+            "type": "Select",
+            "props": {
+              "label": "Digest frequency",
+              "value": {
+                "$bindState": "/preferences/digest"
+              },
+              "options": [
+                {
+                  "label": "Daily",
+                  "value": "daily"
+                },
+                {
+                  "label": "Weekly",
+                  "value": "weekly"
+                }
+              ]
+            }
+          }
+        }
+      },
+      "links": {
+        "preferencesForm": [
+          "preferences"
+        ]
+      }
+    }
+  ],
+  "scenarios": [
+    {
+      "id": "working",
+      "title": "Working workspace",
+      "description": "Invite a teammate and explore the pending state.",
+      "screen": "members",
+      "outcome": "success",
+      "state": {
+        "nav": "members",
+        "inviteOpen": false,
+        "invite": {
+          "email": "",
+          "role": "member",
+          "status": "Pending"
+        },
+        "members": [
+          {
+            "id": "alex",
+            "email": "alex@example.test",
+            "role": "admin",
+            "status": "Active"
+          },
+          {
+            "id": "sam",
+            "email": "sam@example.test",
+            "role": "member",
+            "status": "Active"
+          }
+        ],
+        "preferences": {
+          "email": true,
+          "digest": "weekly"
+        },
+        "acceptedMember": {
+          "status": "Active"
+        },
+        "selectedMember": "",
+        "selectedTab": "general"
+      },
+      "controls": [
+        {
+          "id": "accept-member",
+          "label": "Simulate selected member accepting",
+          "screen": "members",
+          "binding": {
+            "action": "record",
+            "params": {
+              "path": "/members",
+              "operation": "update",
+              "id": {
+                "$state": "/selectedMember"
+              },
+              "value": {
+                "$state": "/acceptedMember"
+              }
+            }
+          }
+        }
+      ]
+    },
+    {
+      "id": "empty",
+      "title": "First teammate",
+      "description": "Start with no members and add your first invitation.",
+      "screen": "members",
+      "outcome": "success",
+      "state": {
+        "nav": "members",
+        "inviteOpen": false,
+        "invite": {
+          "email": "",
+          "role": "member",
+          "status": "Pending"
+        },
+        "members": [],
+        "preferences": {
+          "email": true,
+          "digest": "weekly"
+        },
+        "acceptedMember": {
+          "status": "Active"
+        },
+        "selectedMember": "",
+        "selectedTab": "general"
+      },
+      "controls": [
+        {
+          "id": "accept-member",
+          "label": "Simulate selected member accepting",
+          "screen": "members",
+          "binding": {
+            "action": "record",
+            "params": {
+              "path": "/members",
+              "operation": "update",
+              "id": {
+                "$state": "/selectedMember"
+              },
+              "value": {
+                "$state": "/acceptedMember"
+              }
+            }
+          }
+        }
+      ]
+    },
+    {
+      "id": "failure",
+      "title": "Invitation fails",
+      "description": "The simulated send fails. Your input should remain available.",
+      "screen": "members",
+      "outcome": "failure",
+      "state": {
+        "nav": "members",
+        "inviteOpen": false,
+        "invite": {
+          "email": "",
+          "role": "member",
+          "status": "Pending"
+        },
+        "members": [
+          {
+            "id": "alex",
+            "email": "alex@example.test",
+            "role": "admin",
+            "status": "Active"
+          },
+          {
+            "id": "sam",
+            "email": "sam@example.test",
+            "role": "member",
+            "status": "Active"
+          }
+        ],
+        "preferences": {
+          "email": true,
+          "digest": "weekly"
+        },
+        "acceptedMember": {
+          "status": "Active"
+        },
+        "selectedMember": "",
+        "selectedTab": "general"
+      },
+      "controls": [
+        {
+          "id": "accept-member",
+          "label": "Simulate selected member accepting",
+          "screen": "members",
+          "binding": {
+            "action": "record",
+            "params": {
+              "path": "/members",
+              "operation": "update",
+              "id": {
+                "$state": "/selectedMember"
+              },
+              "value": {
+                "$state": "/acceptedMember"
+              }
+            }
+          }
+        }
+      ]
+    }
+  ],
+  "theme": "light",
+  "customComponents": []
+}
