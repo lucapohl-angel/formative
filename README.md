@@ -25,22 +25,40 @@ The interview adapts Matt Pocock's grilling and domain-modeling methods, with [p
 
 ## Quick start
 
-Install **Node.js 24+**, npm, and Git:
+Use **Node.js 24+**. For Pi, install the package directly:
 
 ```bash
-git clone https://github.com/lucapohl-angel/formative.git
-cd formative
-npm ci
-npm run build
-
-# A fictional example; no agent or model account required.
-node bin/formative.mjs init --project .local/demo --file examples/workspace/project.json
-node bin/formative.mjs preview --project .local/demo --manual
+pi install npm:@koboimomo/formative
 ```
 
-Open the printed loopback URL and keep the terminal running. Manual mode saves feedback but does not generate updates itself. **Finish prototype testing** saves the checkpoint and stops the server. Reopen the same project with `preview`; do not initialize it twice.
+Run `/reload`, then `/formative` in your project. The package includes the extension and skill.
 
-For a real discovery session and agent feedback, follow the [installation guide](https://github.com/lucapohl-angel/formative/blob/main/docs/installation.md).
+For Claude Code or Codex:
+
+```bash
+npm install -g @koboimomo/formative
+
+# Claude Code
+formative install-skill --agent claude
+claude mcp add --scope user --transport stdio formative -- formative mcp
+
+# Or Codex
+formative install-skill --agent codex
+codex mcp add formative -- formative mcp
+```
+
+Restart the agent, then invoke `/formative` in Claude Code or `$formative` in Codex. Install only the integration you use. The npm package includes built browser assets; no build step or Pi installation is required for Claude Code or Codex. [Installation, updates, and source setup](https://github.com/lucapohl-angel/formative/blob/main/docs/installation.md).
+
+### Try the fictional demo
+
+After the npm installation:
+
+```bash
+formative init --project .local/demo --fixture workspace
+formative preview --project .local/demo --manual
+```
+
+Open the printed URL and keep the terminal running. Manual mode saves feedback but does not generate revisions itself. **Finish prototype testing** saves the checkpoint and stops the server. Reopen with `preview`; do not initialize the same project twice.
 
 ## Choose your agent
 
@@ -84,8 +102,8 @@ Project state, revision snapshots, feedback, and checkpoint handoffs live in the
 Components share typography, spacing, control geometry, states, and focus behavior. Specs use semantic variants rather than arbitrary CSS or executable HTML. Search the catalog and retrieve only the contracts you need:
 
 ```bash
-node bin/formative.mjs catalog --query form
-node bin/formative.mjs catalog --name Input
+formative catalog --query form
+formative catalog --name Input
 ```
 
 Project-local components can extend the catalog through a TSX implementation and validated manifest. They are trusted developer code, not an untrusted plugin sandbox. A catalog limitation must remain a prototype limitation; it must not silently remove a product requirement. [Component authoring](https://github.com/lucapohl-angel/formative/blob/main/skills/formative/references/components.md)
@@ -95,6 +113,8 @@ Project-local components can extend the catalog through a TSX implementation and
 [Planboard](https://github.com/lucapohl-angel/planboard) provides a separate browser workspace for reviewing plans, diagrams, annotations, and approved versions. Finish discovery in Formative, then take the written plan into Planboard if useful. Either works independently.
 
 ## Development and limits
+
+From a source checkout:
 
 ```bash
 npm test

@@ -1,7 +1,6 @@
 {
-  "name": "formative",
+  "name": "@koboimomo/formative",
   "version": "0.2.1",
-  "private": true,
   "type": "module",
   "description": "Product discovery and interactive prototypes for coding agents",
   "bin": {
@@ -102,5 +101,9 @@
     "CHANGELOG.md",
     "docs/catalog.md",
     "docs/publishing.md"
-  ]
+  ],
+  "publishConfig": {
+    "access": "public",
+    "registry": "https://registry.npmjs.org/"
+  }
 }

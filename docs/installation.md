@@ -1,8 +1,40 @@
 # Install Formative
 
-Use Node.js **24 or newer**, npm, and a local browser. The tools run on your computer. An agent account is needed for agent work; no additional provider key is required by Formative itself. Claude Code and Codex use their own configured agent through MCP. Pi uses its native extension.
+Use **Node.js 24+**, npm, and a local browser. Each project works independently. Claude Code and Codex use their own configured agent through MCP; Pi uses the native extension. No additional provider key is required by Formative.
 
-## Get the runtime
+## Pi
+
+```bash
+pi install npm:@koboimomo/formative
+```
+
+Run `/reload` or start a new Pi session, then invoke `/formative` in your project. The package declares its native extension and skill; a second MCP connection is unnecessary. Pi installs the runtime dependencies. Built browser assets are included.
+
+## Claude Code
+
+```bash
+npm install -g @koboimomo/formative
+formative install-skill --agent claude
+claude mcp add --scope user --transport stdio formative -- formative mcp
+```
+
+Start a new Claude Code session in your project and invoke `/formative`. The skill is linked under `~/.claude/skills/formative`. Verify MCP with `claude mcp list` or `/mcp`. Existing unrelated skills are never overwritten.
+
+## Codex
+
+```bash
+npm install -g @koboimomo/formative
+formative install-skill --agent codex
+codex mcp add formative -- formative mcp
+```
+
+Start a new Codex session in your project and invoke `$formative`. The installer links the skill under `~/.agents/skills/formative`. Check `codex mcp list` and the session's tool list. The skill and MCP connection are both needed for the integrated workflow.
+
+Use a persistent installation for skill links. An ephemeral `npx` cache is not a suitable permanent skill location. If you already configured this tool under another server name, reuse or remove that registration instead of connecting twice.
+
+## Install from source
+
+For development or a checkout you want to keep in place:
 
 ```bash
 git clone https://github.com/lucapohl-angel/formative.git
@@ -11,90 +43,62 @@ npm ci
 npm run build
 ```
 
-Keep the checkout in place after installation: skill links and MCP commands point to it. Commands below run from this directory. You do not need to install the other project.
-
-## Claude Code
+From that checkout, choose one integration:
 
 ```bash
+# Pi
+pi install "$PWD"
+
+# Claude Code
 node scripts/install-skill.mjs --agent claude
 claude mcp add --scope user --transport stdio formative -- node "$PWD/bin/formative.mjs" mcp
-```
 
-Start a new Claude Code session in the project you want to work on. Invoke `/formative` to explore an idea through questioning and prototypes. The skill is linked under `~/.claude/skills/formative`. Existing unrelated skills are never overwritten by the installer.
-
-Verify the connection with `claude mcp list` or `/mcp` in the session. If you already configured a server pointing to this checkout under another name, reuse it or remove the old registration instead of connecting twice.
-
-## Codex
-
-```bash
+# Codex
 node scripts/install-skill.mjs --agent codex
 codex mcp add formative -- node "$PWD/bin/formative.mjs" mcp
 ```
 
-Start a new Codex session in your project and invoke `$formative`. The installer uses the documented user skill directory, `~/.agents/skills/formative`. Check the server with `codex mcp list` and the session's MCP tool list. The skill and MCP server are both needed for the integrated workflow.
+Keep the checkout in place: skill links and MCP commands point to it. If switching from an existing source installation to npm, remove only the old skill symlink and MCP registration before installing the replacement. The installer intentionally refuses to replace a different skill directory. Project plans and feedback remain untouched.
 
-## Pi
+## Windows and macOS
 
-After the runtime setup above:
-
-```bash
-pi install "$PWD"
-```
-
-Run `/reload` in an existing Pi session or start a new one. Invoke `/formative` in the project you want to work on. The package declares its extension and skill; a second MCP connection is unnecessary. Pi remains optional for Claude Code and Codex installations.
-
-## Windows PowerShell
-
-Use the same clone, npm, and skill-installer commands. For MCP registration, replace the shell-specific `$PWD` command above with:
+The global npm commands work without shell-specific path syntax. Ensure the agent can find the installed command on PATH. For source setup in PowerShell, replace `$PWD` with `(Get-Location).Path` and use an absolute entry-file path:
 
 ```powershell
 $Repo = (Get-Location).Path
 claude mcp add --scope user --transport stdio formative -- node "$Repo\bin\formative.mjs" mcp
 codex mcp add formative -- node "$Repo\bin\formative.mjs" mcp
-# Pi instead:
-pi install $Repo
 ```
 
-The installer creates a directory junction on Windows and a directory symlink elsewhere. CI is configured for Linux; the commands are written portably, but Windows and macOS are not yet end-to-end tested.
+The installer creates a directory junction on Windows and a directory symlink elsewhere. Local checks cover Linux. CI is configured for Linux; Windows and macOS have not yet been tested end to end.
 
-## Other agents and plain CLI
+## Other agents and feedback delivery
 
-Any local agent that can read skill files and use a stdio MCP server can follow the same workflow. Configure the server command `node bin/formative.mjs mcp` using an absolute path to its entry file, then supply `skills/formative/SKILL.md` as instructions. Project operations require an explicit absolute `cwd`; the MCP installation directory is not your working project.
+Configure the stdio MCP command `formative mcp`, or run the entry file with Node using its absolute path. Supply `skills/formative/SKILL.md` as workflow instructions. Project operations require an explicit absolute `cwd`; the installation directory is not the working project.
 
-MCP feedback requires an active `wait` loop. A host that supports background agents can delegate that loop to a dedicated worker. An idle or disconnected host does not automatically receive new prompts. See [usage and feedback](usage.md) for recovery and the CLI fallback.
+MCP feedback requires an active `wait` loop. A background worker must actually have access to the MCP tools. An idle or disconnected host cannot be assumed to wake automatically. See [usage](usage.md) for feedback, recovery, and CLI behavior.
 
-## Release archive
+## Release archives
 
-Cloning is recommended for contributors. A [GitHub release](https://github.com/lucapohl-angel/formative/releases/latest) also includes a packaged `.tgz` runtime. Install the downloaded archive into a dedicated directory with `npm install --prefix /absolute/install-dir /path/to/formative-VERSION.tgz`. This downloads its runtime dependencies; it is not a self-contained executable. Formative archives include built browser assets.
-
-The package directory is `/absolute/install-dir/node_modules/formative`. Run its skill installer and register its MCP entry file using that absolute directory, following the same agent setup above. For Pi, install that directory with `pi install`. Keep the directory in place. The packages are distributed through GitHub, not the npm registry; do not assume `npm install formative` refers to this project.
-
-## Upcoming npm convenience commands
-
-The npm release is pending publisher login and a final package scope. These commands are prepared for 0.2.1; they are not included in the first GitHub release archive. After that release is installed globally, the command will be available on PATH:
-
-```bash
-formative install-skill --agent codex
-codex mcp add formative -- formative mcp
-# Or Claude Code:
-formative install-skill --agent claude
-claude mcp add --scope user --transport stdio formative -- formative mcp
-```
-
-These convenience subcommands are available from 0.2.1. A persistent global install is recommended for skill links; linking a skill into an ephemeral `npx` cache would leave it dependent on that cache. The original absolute-path setup remains supported.
+[GitHub releases](https://github.com/lucapohl-angel/formative/releases/latest) include a `.tgz` runtime as an alternative to the registry. Install a downloaded scoped archive with `npm install -g /path/to/koboimomo-formative-VERSION.tgz`, then use the same agent commands above. Runtime dependencies still download during installation. The original unscoped GitHub release is historical; use the current scoped package.
 
 ## Updates and removal
 
-Update the checkout with `git pull --ff-only`, then run `npm ci` and `npm run build`. Restart the agent/MCP server; Pi users can run `/reload`. Restart active previews after an update.
+- npm: `npm install -g @koboimomo/formative@latest`.
+- Pi: `pi update npm:@koboimomo/formative`; use `pi remove npm:@koboimomo/formative` to uninstall.
+- Source: `git pull --ff-only`, then `npm ci` and `npm run build`.
 
-To remove the MCP registration, use `codex mcp remove formative` or `claude mcp remove --scope user formative`. For Pi, use `pi remove /absolute/path/to/formative`. Remove only the corresponding skill symlink/junction if desired. Project plans and feedback remain in their project directories.
+Restart the agent/MCP server and active previews after updating; Pi users can run `/reload`. Skill links follow the persistent installation directory.
+
+Remove MCP with `codex mcp remove formative` or `claude mcp remove --scope user formative`. Remove only this tool's skill symlink/junction, then use `npm uninstall -g @koboimomo/formative` if no longer needed. Uninstalling the runtime does not remove project data.
 
 ## Troubleshooting
 
-- **Skill not found:** check the installer output, the linked checkout, and the agent's skill list; restart the session.
-- **Tool not found:** check MCP registration and stderr. Use an absolute entry-file path and Node 24+.
-- **Preview missing:** keep the runtime process alive and open its printed loopback URL. Run `npm run build` if the browser assets have not been built.
-- **Feedback waits indefinitely:** make sure the owning agent or its background worker is actively calling `wait`; a saved note is not proof an agent is processing it.
-- **Remote/SSH agent:** the browser must reach the machine running the server. Use a trusted SSH tunnel; these are local tools, not public hosted services.
+- **Command not found:** check Node 24+, the npm global bin directory, and the agent's PATH. An absolute Node entry-file command is a supported fallback.
+- **Skill not found:** check the installer output and linked directory; restart the agent session.
+- **Tool missing:** check MCP registration and stderr; avoid duplicate connections.
+- **Preview missing:** keep the runtime alive and open its printed loopback URL. Source Formative installations need `npm run build`; npm includes the built assets.
+- **Feedback waits:** confirm the owning agent or worker is actively calling `wait`; saving a note does not mean a model processed it.
+- **Remote/SSH agent:** use a trusted SSH tunnel to reach the machine running the server. These are local tools, not public hosted services.
 
-Setup references: [Codex skills](https://learn.chatgpt.com/docs/build-skills), [Codex MCP](https://learn.chatgpt.com/docs/extend/mcp?surface=cli), [Claude Code skills](https://code.claude.com/docs/en/skills), [Claude Code MCP](https://code.claude.com/docs/en/mcp), [Pi](https://pi.dev/).
+Setup references: [Codex skills](https://learn.chatgpt.com/docs/build-skills), [Codex MCP](https://learn.chatgpt.com/docs/extend/mcp?surface=cli), [Claude Code skills](https://code.claude.com/docs/en/skills), [Claude Code MCP](https://code.claude.com/docs/en/mcp), [Pi packages](https://pi.dev/docs/latest/packages).
